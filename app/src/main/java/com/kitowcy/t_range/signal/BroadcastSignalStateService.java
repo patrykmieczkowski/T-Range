@@ -25,7 +25,7 @@ public class BroadcastSignalStateService extends Service {
         LOG_TAG = this.getClass().getSimpleName();
         Log.i(LOG_TAG, "In onCreate");
         tManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        tManager.listen(new CustomPhoneStateListener(getApplicationContext()),
+        tManager.listen(new CustomPhoneStateListener(this),
                 PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
     }
 
@@ -33,7 +33,7 @@ public class BroadcastSignalStateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(LOG_TAG, "In onStartCommand");
-        new Thread(new Runnable() {
+   /*     new Thread(new Runnable() {
             public void run() {
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction(MainActivity.mBroadcastStringAction);
@@ -46,7 +46,7 @@ public class BroadcastSignalStateService extends Service {
                 }
                 sendBroadcast(broadcastIntent);
             }
-        }).start();
+        }).start();*/
         return START_REDELIVER_INTENT;
     }
 

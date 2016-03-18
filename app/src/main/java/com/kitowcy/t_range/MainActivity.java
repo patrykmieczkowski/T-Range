@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String mBroadcastSignalLevel = "SIGNAL_LEVEL";
     public static final String mBroadcastNoSignal = "NO_SIGNAL";
     public static final String mBroadcastSignalBack = "SIGNAL_BACK";
+    public int signalLevel;
 
     private IntentFilter mIntentFilter;
 
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (intent.getAction().equals(mBroadcastSignalBack)) {
                 Log.d(TAG, "Signal back");
             } else if (intent.getAction().equals(mBroadcastSignalLevel)) {
-                Log.d(TAG, "Signal level");
+                signalLevel = intent.getIntExtra("Signal level", -1);
+                Log.d(TAG, "Signal level " + signalLevel);
             /*    Intent stopIntent = new Intent(MainActivity.this,
                         BroadcastSignalStateService.class);
                 stopService(stopIntent);*/
