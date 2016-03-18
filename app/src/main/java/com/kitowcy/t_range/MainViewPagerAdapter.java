@@ -11,6 +11,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
+import com.kitowcy.t_range.settings.SettingsFragment;
 import com.kitowcy.t_range.signal.SignalFragment;
 
 /**
@@ -33,6 +34,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
                 return SignalFragment.newInstance();
             case 1:
                 return new SearchFragment();
+            case 2:
+                return SettingsFragment.newInstance();
             default:
                 return SignalFragment.newInstance();
         }
