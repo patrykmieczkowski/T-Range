@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".search.AdditionalSearchActivity" />
 
+        <service android:name=".signal.BroadcastSignalStateService" >
+        </service>
     </application>
 
 </manifest>
