@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(mBroadcastNoSignal)) {
                 Log.d(TAG, "No signal!");
+                NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
             }
             if (intent.getAction().equals(mBroadcastSignalBack)) {
                 Log.d(TAG, "Signal back");
@@ -94,9 +95,6 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getAction().equals(mBroadcastSignalLevel)) {
                 signalLevel = intent.getIntExtra("Signal level", -1);
                 Log.d(TAG, "Signal level " + signalLevel);
-                if (signalLevel == 0) {
-                    NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
-                }
             }
         }
     };
