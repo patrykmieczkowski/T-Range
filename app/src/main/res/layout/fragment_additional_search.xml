@@ -6,7 +6,7 @@
     tools:context=".search.SearchFragment">
 
     <TextView
-        android:text="Select adressee"
+        android:text="Select contact"
         android:id="@+id/title"
         style="@style/labelCentered" />
 
