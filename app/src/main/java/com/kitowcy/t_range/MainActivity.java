@@ -1,10 +1,16 @@
 package com.kitowcy.t_range;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.kitowcy.t_range.signal.BroadcastSignalStateService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -13,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     public static String POSITION = "POSITION";
+    public static final String mBroadcastSignalLevel = "SIGNAL_LEVEL";
+    public static final String mBroadcastNoSignal = "NO_SIGNAL";
+    public static final String mBroadcastSignalBack = "SIGNAL_BACK";
+
+    private IntentFilter mIntentFilter;
 
     @Bind(R.id.main_view_pager)
     ViewPager mainViewPager;
@@ -27,7 +38,16 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         prepareViewPager();
+
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(mBroadcastNoSignal);
+        mIntentFilter.addAction(mBroadcastSignalBack);
+        mIntentFilter.addAction(mBroadcastSignalLevel);
+
+        Intent serviceIntent = new Intent(this, BroadcastSignalStateService.class);
+        startService(serviceIntent);
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -52,5 +72,35 @@ public class MainActivity extends AppCompatActivity {
 //        for (int x = 0; x < slideTab.getTabCount(); x++) {
 //            slideTab.getTabAt(x).setIcon(R.drawable.signal_icon);
 //        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(mReceiver, mIntentFilter);
+    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "");
+            Log.e(TAG,"");
+            if (intent.getAction().equals(mBroadcastNoSignal)) {
+                Log.d(TAG, "No signal!");
+            } else if (intent.getAction().equals(mBroadcastSignalBack)) {
+                Log.d(TAG, "Signal back");
+            } else if (intent.getAction().equals(mBroadcastSignalLevel)) {
+                Log.d(TAG, "Signal level");
+            /*    Intent stopIntent = new Intent(MainActivity.this,
+                        BroadcastSignalStateService.class);
+                stopService(stopIntent);*/
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mReceiver);
+        super.onPause();
     }
 }
