@@ -17,7 +17,7 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return new SearchFragment();
     }
 
     @Override
