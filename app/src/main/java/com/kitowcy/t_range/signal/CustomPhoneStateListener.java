@@ -14,6 +14,8 @@ import com.kitowcy.t_range.MainActivity;
 public class CustomPhoneStateListener extends PhoneStateListener {
     Context mContext;
     public static String LOG_TAG = "CustomPhoneStateListener";
+    public int previousSignalLevel = 1;
+    public static final String TAG = CustomPhoneStateListener.class.getSimpleName();
 
     public CustomPhoneStateListener(Context context) {
         mContext = context;
@@ -24,31 +26,30 @@ public class CustomPhoneStateListener extends PhoneStateListener {
         super.onSignalStrengthsChanged(signalStrength);
         Log.i(LOG_TAG, "onSignalStrengthsChanged: " + signalStrength);
         if (signalStrength.isGsm()) {
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getGsmBitErrorRate "
-                    + signalStrength.getGsmBitErrorRate());
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getGsmSignalStrength "
-                    + signalStrength.getGsmSignalStrength());
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getGsmSignalStrength level "
-                    + signalStrength.getLevel());
 
-            //sending broadcast to MainActivity
+            //sending broadcast to MainActivity about signal chenged and level
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(MainActivity.mBroadcastSignalLevel);
             broadcastIntent.putExtra("Signal level", signalStrength.getLevel());
             mContext.sendBroadcast(broadcastIntent);
 
-        } else if (signalStrength.getCdmaDbm() > 0) {
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getCdmaDbm "
-                    + signalStrength.getCdmaDbm());
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getCdmaEcio "
-                    + signalStrength.getCdmaEcio());
-        } else {
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getEvdoDbm "
-                    + signalStrength.getEvdoDbm());
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getEvdoEcio "
-                    + signalStrength.getEvdoEcio());
-            Log.i(LOG_TAG, "onSignalStrengthsChanged: getEvdoSnr "
-                    + signalStrength.getEvdoSnr());
+            //sending broadcast to MainActivity about loosing signal
+            if (signalStrength.getLevel() == 0) {
+                Log.d(TAG, "No signal");
+                Intent broadcastIntentNoSignal = new Intent();
+                broadcastIntentNoSignal.setAction(MainActivity.mBroadcastNoSignal);
+                mContext.sendBroadcast(broadcastIntentNoSignal);
+            }
+
+            //sending broadcast to MainActivity about getting back signal
+            if (previousSignalLevel == 0 && signalStrength.getLevel() > previousSignalLevel) {
+                Log.d(TAG, "Signal back");
+                Intent broadcastIntentSignalBack = new Intent();
+                broadcastIntentSignalBack.setAction(MainActivity.mBroadcastSignalBack);
+                mContext.sendBroadcast(broadcastIntentSignalBack);
+            }
+
+            previousSignalLevel = signalStrength.getLevel();
         }
     }
 }
