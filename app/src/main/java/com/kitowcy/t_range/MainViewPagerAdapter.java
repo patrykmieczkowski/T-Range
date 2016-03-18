@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.signal.SignalFragment;
 
 /**

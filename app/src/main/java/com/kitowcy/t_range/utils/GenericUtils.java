@@ -1,4 +1,4 @@
-package com.kitowcy.t_range;
+package com.kitowcy.t_range.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;

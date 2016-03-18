@@ -1,10 +1,13 @@
-package com.kitowcy.t_range;
+package com.kitowcy.t_range.search;
 
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+
+import com.kitowcy.t_range.App;
+import com.kitowcy.t_range.utils.GenericUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +34,14 @@ public class SearchEngine {
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        if (!subscriber.isUnsubscribed() && query.length() > 0)
+                        if (!subscriber.isUnsubscribed() && query.length() > 1)
                             subscriber.onNext(query);
                         return false;
                     }
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        if (!subscriber.isUnsubscribed() && newText.length() > 0)
+                        if (!subscriber.isUnsubscribed() && newText.length() > 1)
                             subscriber.onNext(newText);
                         return false;
                     }
@@ -60,7 +63,8 @@ public class SearchEngine {
             public List<Contact> call(String input) {
                 List<Contact> contacts = new ArrayList<Contact>();
                 for (Contact c : currentContacts) {
-                    if (c.name.contains(input) || c.phoneNumber.contains(input)) {
+                    if (c.name.toLowerCase().contains(input.toLowerCase()) ||
+                            c.phoneNumber.toLowerCase().contains(input.toLowerCase())) {
                         contacts.add(c);
                     }
                 }
