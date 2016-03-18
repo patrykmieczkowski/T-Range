@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 
 import com.kitowcy.t_range.R;
+import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,21 +55,7 @@ public class SettingsFragment extends Fragment {
     @OnClick(R.id.switch_lost_signal)
     public void onLostSignalSwitchClick() {
         if (lostSignalSwitch.isChecked()) {
-            buildNotification();
+            NotificationBuilder.createNotification(getActivity(), "Signal Lost", "You lost your signal :(");
         }
-    }
-
-    private void buildNotification() {
-        Notification notification = new Notification.Builder(getActivity())
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Signal Lost")
-                .setContentText("Unfortunalty you lost your signal :(")
-                .setAutoCancel(true)
-                .build();
-
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);
-
     }
 }
