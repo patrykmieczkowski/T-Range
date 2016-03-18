@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.kitowcy.t_range.signal.BroadcastSignalStateService;
+import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getAction().equals(mBroadcastSignalLevel)) {
                 signalLevel = intent.getIntExtra("Signal level", -1);
                 Log.d(TAG, "Signal level " + signalLevel);
+                if (signalLevel == 0) {
+                    NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
+                }
             }
         }
     };
