@@ -1,11 +1,13 @@
-package com.kitowcy.t_range;
+package com.kitowcy.t_range.search;
+
+import java.io.Serializable;
 
 /**
  * Created by Łukasz Marczak
  *
  * @since 18.03.16
  */
-public class Contact {
+public class Contact implements Serializable {
     public String name;
     public String phoneNumber;
 

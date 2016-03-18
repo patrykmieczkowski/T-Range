@@ -5,17 +5,18 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
+import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.settings.SettingsFragment;
 import com.kitowcy.t_range.signal.SignalFragment;
 
 /**
- * Created by Patryk Mieczkowski on 18.03.16.
+ * @author Patryk Mieczkowski
+ * @since 18.03.16.
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 

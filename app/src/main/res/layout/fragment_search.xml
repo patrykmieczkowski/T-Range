@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kitowcy.t_range.SearchFragment">
+    android:id="@+id/fragment_search_content"
+    tools:context=".search.SearchFragment">
 
     <android.support.v7.widget.SearchView
         android:id="@+id/editText"
@@ -11,11 +12,41 @@
         android:padding="10sp" />
 
     <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/editText"
         android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/messageTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/microphone"
+        android:layout_centerHorizontal="true"
+        android:padding="8sp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        tools:text="To: " />
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/microphone"
+        android:layout_width="180sp"
+        android:layout_height="180sp"
+        android:src="@drawable/cage"
+    android:layout_centerInParent="true"
+
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/microphone"-->
+        <!--android:layout_width="180sp"-->
+        <!--android:layout_height="180sp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:src="@drawable/cage"-->
+        <!--android:visibility="visible"-->
+        <!--tools:visibility="visible" />-->
 
 
 </RelativeLayout>

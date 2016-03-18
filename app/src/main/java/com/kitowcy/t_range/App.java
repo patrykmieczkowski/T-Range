@@ -1,6 +1,7 @@
 package com.kitowcy.t_range;
 
 import android.app.Application;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by Łukasz Marczak
@@ -15,4 +16,5 @@ public class App extends Application {
         super.onCreate();
         INSTANCE = this;
     }
+    public Fragment currentFragment;
 }

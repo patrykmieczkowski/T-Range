@@ -4,12 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
+import com.kitowcy.t_range.search.AdditionalSearchActivity;
+import com.kitowcy.t_range.search.Contact;
+import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.signal.BroadcastSignalStateService;
 import com.kitowcy.t_range.utils.NotificationBuilder;
 
@@ -70,7 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
         MainViewPagerAdapter mvpa = new MainViewPagerAdapter(getSupportFragmentManager(), this);
         mainViewPager.setAdapter(mvpa);
-        slideTab.setupWithViewPager(mainViewPager);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult() called with: " + "requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
+        if (data != null) {
+            Contact c = (Contact) data.getSerializableExtra(AdditionalSearchActivity.CONTACT);
+            if (c != null) {
+                Fragment fragment = App.INSTANCE.currentFragment;
+                if (fragment instanceof SearchFragment) {
+                    SearchFragment fragg = (SearchFragment) fragment;
+                    fragg.contactChosen = true;
+                    fragg.startAnimateRecorder(c);
+                } else Log.e(TAG, "onActivityResult: " + c);
+            }
+        }
+//        slideTab.setupWithViewPager(mainViewPager);
 //        for (int x = 0; x < slideTab.getTabCount(); x++) {
 //            slideTab.getTabAt(x).setIcon(R.drawable.signal_icon);
 //        }
