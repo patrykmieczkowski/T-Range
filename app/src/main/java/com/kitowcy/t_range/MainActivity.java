@@ -4,21 +4,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.design.widget.TabLayout;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-
-import com.kitowcy.t_range.signal.BroadcastSignalStateService;
-import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import com.kitowcy.t_range.search.AdditionalSearchActivity;
 import com.kitowcy.t_range.search.Contact;
 import com.kitowcy.t_range.search.SearchFragment;
+import com.kitowcy.t_range.signal.BroadcastSignalStateService;
+import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 } else Log.e(TAG, "onActivityResult: " + c);
             }
         }
-        slideTab.setupWithViewPager(mainViewPager);
+//        slideTab.setupWithViewPager(mainViewPager);
 //        for (int x = 0; x < slideTab.getTabCount(); x++) {
 //            slideTab.getTabAt(x).setIcon(R.drawable.signal_icon);
 //        }
