@@ -19,9 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     public static String POSITION = "POSITION";
-    public static final String mBroadcastStringAction = "com.truiton.broadcast.string";
-    public static final String mBroadcastIntegerAction = "com.truiton.broadcast.integer";
-    public static final String mBroadcastArrayListAction = "com.truiton.broadcast.arraylist";
+    public static final String mBroadcastSignalLevel = "SIGNAL_LEVEL";
+    public static final String mBroadcastNoSignal = "NO_SIGNAL";
+    public static final String mBroadcastSignalBack = "SIGNAL_BACK";
+
     private IntentFilter mIntentFilter;
 
     @Bind(R.id.main_view_pager)
@@ -39,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         prepareViewPager();
 
         mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(mBroadcastStringAction);
-        mIntentFilter.addAction(mBroadcastIntegerAction);
-        mIntentFilter.addAction(mBroadcastArrayListAction);
+        mIntentFilter.addAction(mBroadcastNoSignal);
+        mIntentFilter.addAction(mBroadcastSignalBack);
+        mIntentFilter.addAction(mBroadcastSignalLevel);
 
         Intent serviceIntent = new Intent(this, BroadcastSignalStateService.class);
         startService(serviceIntent);
@@ -84,16 +85,15 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "");
             Log.e(TAG,"");
-            if (intent.getAction().equals(mBroadcastStringAction)) {
-                Log.d(TAG, intent.getStringExtra("Data") + "\n\n");
-            } else if (intent.getAction().equals(mBroadcastIntegerAction)) {
-                Log.d(TAG, intent.getIntExtra("Data", 0) + "\n\n");
-            } else if (intent.getAction().equals(mBroadcastArrayListAction)) {
-                Log.d(TAG, intent.getStringArrayListExtra("Data").toString()
-                        + "\n\n");
-                Intent stopIntent = new Intent(MainActivity.this,
+            if (intent.getAction().equals(mBroadcastNoSignal)) {
+                Log.d(TAG, "No signal!");
+            } else if (intent.getAction().equals(mBroadcastSignalBack)) {
+                Log.d(TAG, "Signal back");
+            } else if (intent.getAction().equals(mBroadcastSignalLevel)) {
+                Log.d(TAG, "Signal level");
+            /*    Intent stopIntent = new Intent(MainActivity.this,
                         BroadcastSignalStateService.class);
-                stopService(stopIntent);
+                stopService(stopIntent);*/
             }
         }
     };
