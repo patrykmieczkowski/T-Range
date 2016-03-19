@@ -116,8 +116,7 @@ public class SearchFragment extends Fragment {
                 if (triggerForStop) {
                     triggerForStop = false;
                     stopRecord();
-                    aliveAnimation = false;
-                    mHandler.removeCallbacks(loopingAnimationRunnable);
+                    cleanFlags();
                     microphone.animate().scaleX(1).setDuration(500).start();
                     microphone.animate().scaleY(1).setDuration(500).start();
                     mHandler.postDelayed(new Runnable() {
@@ -222,13 +221,15 @@ public class SearchFragment extends Fragment {
     private void stopRecord() {
         Log.d(TAG, "stopRecord: ");
         recorerHelper.recorder.stop();
+    }
+    void cleanFlags(){
         contactChosen = false;
         triggerForStop = false;
         mHandler.removeCallbacks(loopingAnimationRunnable);
         aliveAnimation = true;
         messageTo.setText("Select another contact");
-    }
 
+    }
     public interface Callable {
         void call(Boolean bool);
     }
