@@ -3,15 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="48dp"
+    android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.kitowcy.t_range.SearchFragment"
-    android:orientation="vertical">
+    tools:context="com.kitowcy.t_range.SearchFragment">
+
+    <TextView
+        style="@style/classicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
+        android:text="t-range"
+        android:textSize="48sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/no_signal_switch_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal">
 
         <Switch
@@ -27,9 +37,10 @@
             android:text="Notify me when I lost my signal power" />
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/signal_back_switch_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
