@@ -2,8 +2,10 @@ package com.kitowcy.t_range.search;
 
 
 import android.content.Intent;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -39,14 +43,22 @@ public class SearchFragment extends Fragment {
     SearchView searchView;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    @Bind(R.id.fragment_search_content)
+    RelativeLayout relativeLayout;
 
     @Bind(R.id.microphone)
     ImageView microphone;
     @Bind(R.id.messageTo)
     TextView messageTo;
-    public  boolean contactChosen = false;
+    public boolean contactChosen = false;
     ContactsAdapter contactsAdapter;
+
+    boolean aliveAnimation = true;
+    boolean triggerForStop;
+
     final android.os.Handler mHandler = new android.os.Handler();
+
+    RecorerHelper recorerHelper = new RecorerHelper();
 
     public SearchFragment() {
         // Required empty public constructor
@@ -87,8 +99,34 @@ public class SearchFragment extends Fragment {
         microphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (triggerForStop) {
+                    stopRecord();
+                    aliveAnimation = false;
+                    mHandler.removeCallbacks(loopingAnimationRunnable);
+                    microphone.animate().scaleX(1).setDuration(500).start();
+                    microphone.animate().scaleY(1).setDuration(500).start();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar.make(relativeLayout, "Recording saved", Snackbar.LENGTH_SHORT).show();
+                        }
+                    }, 500);
+                    return;
+                }
                 if (contactChosen) {
-                    performCall();
+                    startRecord(new Callable() {
+                        @Override
+                        public void call(Boolean bool) {
+                            if (bool) {
+                                recorerHelper.recorder.start();
+                                Snackbar.make(relativeLayout, "Start recording", Snackbar.LENGTH_SHORT).show();
+                                performCall(aliveAnimation);
+                            } else {
+                                Toast.makeText(SearchFragment.this
+                                        .getActivity(), "Failed to setup recoreder", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 } else {
                     showPopUpContactPicker();
                 }
@@ -104,8 +142,10 @@ public class SearchFragment extends Fragment {
             @Override
             public void call(List<Contact> contacts) {
                 Log.e(TAG, "call: " + contacts.size());
+                if (contacts.size() == 0) {
+                    return;
+                }
                 if (recyclerView.getVisibility() == View.GONE) {
-
                     microphone.setVisibility(View.GONE);
                     messageTo.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -128,9 +168,58 @@ public class SearchFragment extends Fragment {
         getActivity().startActivityForResult(intent, 1);
     }
 
-    private void performCall() {
-        Toast.makeText(getActivity(), "CALL", Toast.LENGTH_SHORT).show();
+    private void loopAnimation() {
+        microphone.setScaleX(1);
+        microphone.setScaleY(1);
+        microphone.animate().scaleX(0.5f).setDuration(500).start();
+        microphone.animate().scaleY(0.5f).setDuration(500).start();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                microphone.animate().scaleX(1).setDuration(500).start();
+                microphone.animate().scaleY(1).setDuration(500).start();
+            }
+        }, 700);
+        performCall(aliveAnimation);
     }
+
+    private void performCall(boolean boo) {
+        triggerForStop = true;
+        if (boo)
+            mHandler.postDelayed(loopingAnimationRunnable, 1400);
+    }
+
+    private void startRecord(final Callable callable) {
+        recorerHelper.prepareMediaRecorder().subscribeOn(Schedulers.io())
+                .subscribe(new Action1<MediaRecorder>() {
+                    @Override
+                    public void call(MediaRecorder mediaRecorder) {
+                        callable.call(true);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        callable.call(false);
+                    }
+                });
+    }
+
+    private void stopRecord() {
+        Log.d(TAG, "stopRecord: ");
+        recorerHelper.recorder.stop();
+    }
+
+    public interface Callable {
+        void call(Boolean bool);
+    }
+
+    private Runnable loopingAnimationRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loopAnimation();
+
+        }
+    };
 
     public void startAnimateRecorder(final Contact contact) {
         Log.d(TAG, "startAnimateRecorder: ");

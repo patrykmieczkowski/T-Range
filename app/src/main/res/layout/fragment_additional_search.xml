@@ -24,6 +24,4 @@
         android:layout_below="@+id/editText"
         android:scrollbars="vertical"
         android:visibility="gone" />
-
-
 </RelativeLayout>
