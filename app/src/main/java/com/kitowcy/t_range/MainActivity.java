@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainViewPagerAdapter mvpa = new MainViewPagerAdapter(getSupportFragmentManager(), this);
         mainViewPager.setAdapter(mvpa);
+        slideTab.setupWithViewPager(mainViewPager);
     }
 
     @Override

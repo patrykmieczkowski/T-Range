@@ -25,4 +25,13 @@
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 
+    <style name="largeCustomTextView" parent="@android:style/TextAppearance">
+        <item name="android:textSize">40sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="classicTextView" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
 </resources>
