@@ -47,15 +47,15 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         return 3;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-
-        Drawable image = ContextCompat.getDrawable(context, R.drawable.signal_icon);
-        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-        SpannableString sb = new SpannableString(titles[position]);
-        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sb;
-    }
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//
+//        Drawable image = ContextCompat.getDrawable(context, R.drawable.signal_icon);
+//        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//        SpannableString sb = new SpannableString(titles[position]);
+//        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        return sb;
+//    }
 
 }

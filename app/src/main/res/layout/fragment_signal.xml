@@ -22,4 +22,11 @@
         android:layout_below="@id/signal_desc_text"
         android:background="@color/colorAccent" />
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_above="@id/signal_desc_text"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/signal_1" />
+
 </RelativeLayout>

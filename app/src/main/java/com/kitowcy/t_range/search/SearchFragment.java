@@ -46,15 +46,19 @@ public class SearchFragment extends Fragment {
     public static final String TAG = SearchFragment.class.getSimpleName();
     @Bind(R.id.editText)
     SearchView searchView;
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+
     @Bind(R.id.fragment_search_content)
     RelativeLayout relativeLayout;
 
     @Bind(R.id.microphone)
     ImageView microphone;
+
     @Bind(R.id.messageTo)
     TextView messageTo;
+
     public boolean contactChosen = false;
     public boolean isSignal = true;
     private IntentFilter mIntentFilter;
@@ -111,6 +115,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (triggerForStop) {
+                    triggerForStop = false;
                     stopRecord();
                     aliveAnimation = false;
                     mHandler.removeCallbacks(loopingAnimationRunnable);
@@ -196,9 +201,9 @@ public class SearchFragment extends Fragment {
 
     private void performCall(boolean boo) {
         triggerForStop = true;
-        if (boo)
-            mHandler.postDelayed(loopingAnimationRunnable, 1400);
+        if (boo) mHandler.postDelayed(loopingAnimationRunnable, 1400);
     }
+
 
     private void startRecord(final Callable callable) {
         recorerHelper.prepareMediaRecorder().subscribeOn(Schedulers.io())
@@ -218,17 +223,21 @@ public class SearchFragment extends Fragment {
     private void stopRecord() {
         Log.d(TAG, "stopRecord: ");
         recorerHelper.recorder.stop();
+        contactChosen = false;
+        triggerForStop = false;
+        mHandler.removeCallbacks(loopingAnimationRunnable);
+        aliveAnimation = true;
+        messageTo.setText("Select another contact");
     }
 
     public interface Callable {
         void call(Boolean bool);
     }
 
-    private Runnable loopingAnimationRunnable = new Runnable() {
+    private final Runnable loopingAnimationRunnable = new Runnable() {
         @Override
         public void run() {
             loopAnimation();
-
         }
     };
 
