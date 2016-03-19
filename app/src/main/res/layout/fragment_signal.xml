@@ -39,7 +39,7 @@
         android:layout_margin="28dp"
         android:background="@drawable/button_frame_layout"
         android:fontFamily="sans-serif-light"
-        android:text="request signal"
+        android:text="report signal status"
         android:textAllCaps="false"
         android:textSize="24sp" />
 
@@ -51,7 +51,7 @@
         android:layout_above="@id/request_signal_button"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Krakow, ul. Czarnowiejska" />
+        android:text="location: Czarnowiejska" />
 
     <TextView
         android:id="@+id/signal_power_text"
@@ -62,6 +62,6 @@
         android:layout_above="@id/localization_text"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="-70dBm" />
+        tools:text="-70dBm" />
 
 </RelativeLayout>

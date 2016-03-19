@@ -52,46 +52,10 @@ public class SignalFragment extends Fragment {
 
     @OnClick(R.id.request_signal_button)
     public void onRequest() {
-        Log.d(TAG, "onRequest: ");
-        if (mutex.get()) {
-            Log.e(TAG, "mutexed");
-            return;
-        }
-        mutex.set(true);
+        Log.d(TAG, "onRequest()");
 
-        Location lastLocation = App.INSTANCE.location;
-        if (lastLocation == null) {
-            Log.e(TAG, "last location is null");
-            localizationText.setText("Location not ready. Enable GPS");
-            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 600);
-            mutex.set(false);
-        } else {
-            Log.i(TAG, "fetch location: " + lastLocation.getLatitude() + "," + lastLocation.getLongitude());
-            GeocodingUtils.getCurrentLocation(App.INSTANCE, lastLocation)
-                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Address>() {
-                        @Override
-                        public void call(Address address) {
-                            String message = address.getAddressLine(0);
-                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
-                            localizationText.setText("Your location: " + message);
-                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
-                            mutex.set(false);
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    localizationText.setText("Location not available now. Sorry");
-                                    AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
-                                    mutex.set(false);
-                                }
-                            });
-                        }
-                    });
-        }
+        refreshLocation();
+
     }
 
     void runOnUiThread(Runnable r) {
@@ -133,9 +97,9 @@ public class SignalFragment extends Fragment {
 
         signalStrengthLevel = (TextView) v.findViewById(R.id.signal_desc_text);
         signalImage = (ImageView) v.findViewById(R.id.signal_image);
-
-
         signalStrengthText = (TextView) v.findViewById(R.id.signal_power_text);
+
+        refreshLocation();
         return v;
     }
 
@@ -157,7 +121,7 @@ public class SignalFragment extends Fragment {
             if (intent.getAction().equals(MainActivity.mBroadcastSignalLevel)) {
                 signalLevel = intent.getIntExtra("Signal level", -1);
                 signalStrength = intent.getIntExtra("Signal strength", -70);
-                signalStrengthText.setText(signalStrength + " "+ "dBm");
+                signalStrengthText.setText(signalStrength + " " + "dBm");
                 Log.d(TAG, "Signal level " + signalLevel);
                 Log.d(TAG, "Signal strength" + signalStrength);
                 switch (signalLevel) {
@@ -185,5 +149,49 @@ public class SignalFragment extends Fragment {
             }
         }
     };
+
+    private void refreshLocation() {
+        Log.d(TAG, "refreshLocation()");
+
+        if (mutex.get()) {
+            Log.e(TAG, "mutexed");
+            return;
+        }
+        mutex.set(true);
+
+        Location lastLocation = App.INSTANCE.location;
+        if (lastLocation == null) {
+            Log.e(TAG, "last location is null");
+            localizationText.setText("location not ready, enable GPS");
+            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 600);
+            mutex.set(false);
+        } else {
+            Log.i(TAG, "fetch location: " + lastLocation.getLatitude() + "," + lastLocation.getLongitude());
+            GeocodingUtils.getCurrentLocation(App.INSTANCE, lastLocation)
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Address>() {
+                        @Override
+                        public void call(Address address) {
+                            String message = address.getAddressLine(0);
+                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                            localizationText.setText("location: " + message);
+                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                            mutex.set(false);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    localizationText.setText("location not available now");
+                                    AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                                    mutex.set(false);
+                                }
+                            });
+                        }
+                    });
+        }
+    }
 
 }
