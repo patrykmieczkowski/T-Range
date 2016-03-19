@@ -1,6 +1,9 @@
 package com.kitowcy.t_range.map;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.RealmLocation;
+import com.kitowcy.t_range.utils.AnimateUtils;
 
 import java.util.ArrayList;
 
@@ -37,6 +41,8 @@ public class MapFragment extends Fragment {
     public static final String TAG = MapFragment.class.getSimpleName();
     @Bind(R.id.fragment_map_parent)
     RelativeLayout parentLayout;
+    @Bind(R.id.backgroundView)
+    View pinkView;
     SupportMapFragment mapFragment;
     GoogleMap googleMap;
     ArrayList<MarkerOptions> options;
@@ -64,14 +70,17 @@ public class MapFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: ");
+        options = getMarkerOpts();
         mapFragment.setRetainInstance(true);
+//        View view1  = new View(getActivity().getApplicationContext());
+//        parentLayout.addView(view1);
+        AnimateUtils.animateFade(pinkView, 0, 1, 400);
         MapObservable.init(mapFragment)
                 .subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<GoogleMap>() {
                     @Override
                     public void call(GoogleMap googleMap) {
                         MapFragment.this.googleMap = googleMap;
-
                         setupMap();
                     }
                 }, new Action1<Throwable>() {
@@ -93,7 +102,7 @@ public class MapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, v);
         Log.d(TAG, "onCreateView: ");
-        options = getMarkerOpts();
+
         mapFragment = new SupportMapFragment();
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mapFragmentContainer,
@@ -124,14 +133,25 @@ public class MapFragment extends Fragment {
         RealmResults<RealmLocation> mockedLocations = realm.allObjects(RealmLocation.class);
         for (int j = 0; j < mockedLocations.size(); j++) {
             RealmLocation location = mockedLocations.get(j);
-            float hue = matchHue(location.getStrength());
+            int hue = location.getStrength();
             MarkerOptions markerOpts = new MarkerOptions()
                     .position(new LatLng(location.getLatitude(), location.getLongitude()))
                     .title(location.getName())
-                    .icon(BitmapDescriptorFactory.defaultMarker(hue));
+                    .icon(BitmapDescriptorFactory.fromBitmap(createScaledBitmap(hue)));
             opts.add(markerOpts);
         }
         return opts;
+    }
+
+    private Bitmap createScaledBitmap(int hue) {
+        Log.d(TAG, "createScaledBitmap: " + hue);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),
+                hue == 0 ? R.drawable.marker_1 :
+                        hue == 1 ? R.drawable.marker_2 :
+                                hue == 2 ? R.drawable.marker_3 :
+                                        R.drawable.marker_4
+        );
+        return Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 3, bmp.getHeight() / 3, false);
     }
 
     private void setupMap() {
@@ -147,19 +167,21 @@ public class MapFragment extends Fragment {
         initialized = true;
     }
 
-    private float matchHue(int strength) {
+    @DrawableRes
+    private int matchHue(int strength) {
+        Log.d(TAG, "matchHue: " + strength);
         switch (strength) {
             case 0:
-                return BitmapDescriptorFactory.HUE_VIOLET;
             case 1:
-                return BitmapDescriptorFactory.HUE_RED;
+                return R.drawable.marker_3;
             case 2:
-                return BitmapDescriptorFactory.HUE_ORANGE;
+                return R.drawable.marker_2;
             case 3:
-                return BitmapDescriptorFactory.HUE_YELLOW;
+                return R.drawable.marker_3;
             case 4:
-                return BitmapDescriptorFactory.HUE_GREEN;
+                return R.drawable.marker_4;
+            default:
+                return R.drawable.marker_4;
         }
-        return BitmapDescriptorFactory.HUE_VIOLET;
     }
 }

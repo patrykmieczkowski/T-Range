@@ -9,20 +9,18 @@
     tools:context="com.kitowcy.t_range.SearchFragment">
 
     <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Mapa mapa testowa" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Mapa mapa testowa" />-->
     <RelativeLayout
+        android:background="@color/colorPrimaryALPHA"
         android:id="@+id/mapFragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryALPHA" />
-
-    <ProgressBar
-        android:id="@+id/progressMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_height="match_parent"/>
+    <View
+        android:background="@color/colorPrimaryALPHA"
+        android:id="@+id/backgroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
