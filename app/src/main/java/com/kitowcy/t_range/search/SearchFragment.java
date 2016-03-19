@@ -143,7 +143,10 @@ public class SearchFragment extends Fragment {
                         }
                     });
                 } else {
-                    showPopUpContactPicker();
+                    searchView.requestFocus();
+
+                    Snackbar.make(relativeLayout,"Search contact",Snackbar.LENGTH_SHORT).show();
+//                    showPopUpContactPicker();
                 }
                 AnimateUtils.compositeFade(mHandler, microphone, 1, 0, 600);
             }
