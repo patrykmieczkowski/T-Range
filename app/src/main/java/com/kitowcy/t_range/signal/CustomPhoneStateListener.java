@@ -47,7 +47,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
                 Log.d(TAG, "No signal");
                 Boolean noSignalFlag = sharedpreferences.getBoolean(noSignalKey, false);
                 if(noSignalFlag) {
-                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal lost!", "You lost your signal :(");
+                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "No service", "Currently no mobile network service available");
                 }
                 Intent broadcastIntentNoSignal = new Intent();
                 broadcastIntentNoSignal.setAction(MainActivity.mBroadcastNoSignal);
@@ -59,7 +59,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
                 Log.d(TAG, "Signal back");
                 Boolean signalBackFlag = sharedpreferences.getBoolean(signalBackKey, false);
                 if(signalBackFlag){
-                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal is back!", "Yay! Signal is here again :)");
+                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Service is back", "Mobile network service available");
                 }
                 Intent broadcastIntentSignalBack = new Intent();
                 broadcastIntentSignalBack.setAction(MainActivity.mBroadcastSignalBack);
