@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         prepareViewPager();
 
-        mIntentFilter = new IntentFilter();
+       /* mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(mBroadcastNoSignal);
         mIntentFilter.addAction(mBroadcastSignalBack);
-        mIntentFilter.addAction(mBroadcastSignalLevel);
+        mIntentFilter.addAction(mBroadcastSignalLevel);*/
 
         Intent serviceIntent = new Intent(this, BroadcastSignalStateService.class);
         startService(serviceIntent);
@@ -97,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         registerReceiver(mReceiver, mIntentFilter);
-    }
+    }*/
 
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+/*    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(mBroadcastNoSignal)) {
@@ -118,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Signal level " + signalLevel);
             }
         }
-    };
+    };*/
 
-    @Override
+ /*   @Override
     protected void onPause() {
         unregisterReceiver(mReceiver);
         super.onPause();
-    }
+    }*/
 }

@@ -39,7 +39,7 @@ public class SignalFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-       // registerReceiver(mReceiver, mIntentFilter);
+        getActivity().registerReceiver(mReceiver, mIntentFilter);
     }
 
     @Override
@@ -47,6 +47,12 @@ public class SignalFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_signal, container, false);
         return v;
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(mReceiver);
+        super.onPause();
     }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
