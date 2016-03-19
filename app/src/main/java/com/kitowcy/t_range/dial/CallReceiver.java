@@ -100,7 +100,7 @@ public class CallReceiver extends BroadcastReceiver {
             }
         }
 
-        private void prepareMediaRecorder() {
+        public   void prepareMediaRecorder() {
             Log.d(TAG, "prepareMediaRecorder()");
 
             recorder = new MediaRecorder();
