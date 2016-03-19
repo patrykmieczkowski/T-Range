@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
+import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.NotificationBuilder;
 
 /**
@@ -47,7 +48,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
                 Log.d(TAG, "No signal");
                 Boolean noSignalFlag = sharedpreferences.getBoolean(noSignalKey, false);
                 if(noSignalFlag) {
-                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal lost!", "You lost your signal :(");
+                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), R.drawable.signal_0, "Signal lost!", "You lost your signal :(");
                 }
                 Intent broadcastIntentNoSignal = new Intent();
                 broadcastIntentNoSignal.setAction(MainActivity.mBroadcastNoSignal);
@@ -59,7 +60,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
                 Log.d(TAG, "Signal back");
                 Boolean signalBackFlag = sharedpreferences.getBoolean(signalBackKey, false);
                 if(signalBackFlag){
-                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal is back!", "Yay! Signal is here again :)");
+                    NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), R.drawable.signal_4,  "Signal is back!", "Yay! Signal is here again :)");
                 }
                 Intent broadcastIntentSignalBack = new Intent();
                 broadcastIntentSignalBack.setAction(MainActivity.mBroadcastSignalBack);

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,8 +56,20 @@ public class SearchFragment extends Fragment {
     @Bind(R.id.microphone)
     ImageView microphone;
 
+    @Bind(R.id.record_stop_text)
+    TextView recordStopText;
+
+    @Bind(R.id.record_stop_underscore)
+    View recordStopUnderscore;
+
+    @Bind(R.id.send_message_button)
+    Button sendMessageButton;
+
     @Bind(R.id.messageTo)
     TextView messageTo;
+
+    @Bind(R.id.textCounter)
+    TextView textCounter;
 
     public boolean contactChosen = false;
     public boolean isSignal = true;
@@ -122,30 +135,41 @@ public class SearchFragment extends Fragment {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Snackbar.make(relativeLayout, "Recording saved", Snackbar.LENGTH_SHORT).show();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    textCounter.setText("30s");
+                                }
+                            });
                         }
                     }, 500);
                     return;
                 }
                 if (contactChosen) {
                     microphone.setImageResource(R.drawable.record_stop);
+                    recordStopText.setText("stop");
                     startRecord(new Callable() {
                         @Override
                         public void call(Boolean bool) {
                             if (bool) {
                                 recorerHelper.recorder.start();
-                                Snackbar.make(relativeLayout, "Start recording", Snackbar.LENGTH_SHORT).show();
                                 performCall(aliveAnimation);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textCounter.setText("recording...");
+                                    }
+                                });
                             } else {
                                 Toast.makeText(SearchFragment.this
-                                        .getActivity(), "Failed to setup recoreder", Toast.LENGTH_SHORT).show();
+                                        .getActivity(), "failed to setup recorder", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } else {
                     searchView.requestFocus();
 
-                    Snackbar.make(relativeLayout, "Search contact", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayout, "search contact", Snackbar.LENGTH_SHORT).show();
 //                    showPopUpContactPicker();
                 }
                 AnimateUtils.compositeFade(mHandler, microphone, 1, 0, 600);
@@ -156,29 +180,33 @@ public class SearchFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
 
         SearchEngine engine = new SearchEngine();
-        SearchEngine.deffered(engine.getSuggestions(searchView))
-                .subscribe(new Action1<List<Contact>>() {
-                    @Override
-                    public void call(List<Contact> contacts) {
-                        Log.e(TAG, "call: " + contacts.size());
-                        if (contacts.size() == 0) {
-                            return;
-                        }
-                        if (recyclerView.getVisibility() == View.GONE) {
-                            microphone.setVisibility(View.GONE);
-                            messageTo.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            AnimateUtils.animateFade(recyclerView, 0, 1, 300);
-                        }
-                        AnimateUtils.compositeFade(mHandler, recyclerView, 1, .5f, 200);
-                        contactsAdapter.refresh(contacts);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e(TAG, "call: " + throwable.getMessage());
-                    }
-                });
+        engine.getSuggestions(searchView).subscribe(new Action1<List<Contact>>() {
+            @Override
+            public void call(List<Contact> contacts) {
+                Log.e(TAG, "call: " + contacts.size());
+                if (contacts.size() == 0) {
+                    return;
+                }
+                if (recyclerView.getVisibility() == View.GONE) {
+                    microphone.setVisibility(View.GONE);
+                    messageTo.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recordStopText.setVisibility(View.GONE);
+                    recordStopUnderscore.setVisibility(View.GONE);
+                    sendMessageButton.setVisibility(View.GONE);
+                    textCounter.setText("");
+                    textCounter.setVisibility(View.GONE);
+                    AnimateUtils.animateFade(recyclerView, 0, 1, 300);
+                }
+                AnimateUtils.compositeFade(mHandler, recyclerView, 1, .5f, 200);
+                contactsAdapter.refresh(contacts);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                Log.e(TAG, "call: " + throwable.getMessage());
+            }
+        });
         return v;
     }
 
@@ -233,8 +261,8 @@ public class SearchFragment extends Fragment {
         triggerForStop = false;
         mHandler.removeCallbacks(loopingAnimationRunnable);
         aliveAnimation = true;
-        messageTo.setText("Select another contact");
         microphone.setImageResource(R.drawable.record_start);
+        recordStopText.setText("record");
     }
 
     public interface Callable {
@@ -252,7 +280,11 @@ public class SearchFragment extends Fragment {
         Log.d(TAG, "startAnimateRecorder: ");
         microphone.setVisibility(View.VISIBLE);
         messageTo.setVisibility(View.VISIBLE);
-        String message = "Message To: " + contact.name;
+        recordStopText.setVisibility(View.VISIBLE);
+        recordStopUnderscore.setVisibility(View.VISIBLE);
+        sendMessageButton.setVisibility(View.VISIBLE);
+        textCounter.setVisibility(View.VISIBLE);
+        String message = "to: " + contact.name;
         messageTo.setText(message);
 
         AnimateUtils.animateFade(messageTo, 0, 1, 300);
