@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
+import com.kitowcy.t_range.dialog.SendDialog;
 import com.kitowcy.t_range.utils.AnimateUtils;
 
 import java.util.Collections;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -145,7 +147,7 @@ public class SearchFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    textCounter.setText("30s");
+                                    textCounter.setText("message ready");
                                 }
                             });
                         }
@@ -346,4 +348,11 @@ public class SearchFragment extends Fragment {
             }
         }
     };
+
+    @OnClick(R.id.send_message_button)
+    public void sendMessageGo(){
+
+        SendDialog sendDialog = new SendDialog(getActivity(), "message sent");
+        sendDialog.show();
+    }
 }
