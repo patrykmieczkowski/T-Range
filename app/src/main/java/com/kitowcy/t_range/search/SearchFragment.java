@@ -100,6 +100,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (triggerForStop) {
+                    triggerForStop = false;
                     stopRecord();
                     aliveAnimation = false;
                     mHandler.removeCallbacks(loopingAnimationRunnable);
@@ -185,8 +186,18 @@ public class SearchFragment extends Fragment {
 
     private void performCall(boolean boo) {
         triggerForStop = true;
-        if (boo)
-            mHandler.postDelayed(loopingAnimationRunnable, 1400);
+        if (boo) mHandler.postDelayed(loopingAnimationRunnable, 1400);
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
+    }
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
     }
 
     private void startRecord(final Callable callable) {
