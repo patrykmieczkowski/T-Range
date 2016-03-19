@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
+import com.kitowcy.t_range.utils.DialogHelper;
 import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SignalFragment extends Fragment {
     public static final String TAG = SignalFragment.class.getSimpleName();
@@ -63,6 +65,8 @@ public class SignalFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_signal, container, false);
         signalStrengthLevel = (TextView) v.findViewById(R.id.signal_desc_text);
         signalImage = (ImageView) v.findViewById(R.id.signal_image);
+
+        ButterKnife.bind(this, v);
         return v;
     }
 
@@ -87,7 +91,7 @@ public class SignalFragment extends Fragment {
                 switch (signalLevel) {
                     case 0:
                         signalStrengthLevel.setText(NO_SIGNAL);
-                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_0));
                         break;
                     case 1:
                         signalStrengthLevel.setText(WEAK);
@@ -110,4 +114,8 @@ public class SignalFragment extends Fragment {
         }
     };
 
+    @OnClick(R.id.request_signal_button)
+    public void showDialog() {
+        DialogHelper.showAlertNoInternet(getActivity());
+    }
 }
