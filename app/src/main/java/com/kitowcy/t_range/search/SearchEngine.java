@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -49,7 +50,14 @@ public class SearchEngine {
             }
         }).debounce(200, TimeUnit.MILLISECONDS);
     }
-
+    public static <T> Observable<T> deffered(final Observable<T> o){
+        return Observable.defer(new Func0<Observable<T>>() {
+            @Override
+            public Observable<T> call() {
+                return o;
+            }
+        });
+    }
     public Observable<List<Contact>> getSuggestions(final SearchView searchView) {
         return allContacts().flatMap(new Func1<List<Contact>, Observable<String>>() {
             @Override

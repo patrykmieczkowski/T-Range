@@ -1,5 +1,7 @@
 package com.kitowcy.t_range;
 
+import java.util.UUID;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -18,7 +20,7 @@ public class RealmLocation extends RealmObject {
     private int strength;
 
     public RealmLocation(double latitude, double longitude, String name, int strength) {
-        this.uuid = latitude + "," + longitude;
+        this.uuid = UUID.randomUUID().toString();
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;

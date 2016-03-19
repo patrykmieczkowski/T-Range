@@ -15,8 +15,12 @@ import com.kitowcy.t_range.search.Contact;
 import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.signal.BroadcastSignalStateService;
 
+import java.util.Random;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +49,36 @@ public class MainActivity extends AppCompatActivity {
 
         Intent serviceIntent = new Intent(this, BroadcastSignalStateService.class);
         startService(serviceIntent);
+
+        prepareMockData();
+    }
+
+    private void prepareMockData() {
+        Log.d(TAG, "prepareMockData: ");
+        Realm realm = Realm.getInstance(this);
+        RealmResults<RealmLocation> locations = realm.allObjects(RealmLocation.class);
+        if (locations != null && locations.size() > 0) {
+            realm.beginTransaction();
+            locations.clear();
+            realm.commitTransaction();
+
+        }
+        realm.beginTransaction();
+
+        double latt = 50.06799f;
+        double lonn = 19.9128143f;
+        Random random = new Random();
+        for (int j = 0; j < 10; j++) {
+            int sgn = random.nextBoolean() ? -1 : 1;
+            int sgn2 = random.nextBoolean() ? -1 : 1;
+            double lat = latt + (random.nextFloat() + sgn * .5f) / 40;
+            double lon = lonn + (random.nextFloat() + sgn2 * .5f) / 40;
+            int strength = random.nextInt(5);
+            String name = "Position " + strength;
+            RealmLocation location = new RealmLocation(lat, lon, name, strength);
+            realm.copyToRealmOrUpdate(location);
+        }
+        realm.commitTransaction();
     }
 
 

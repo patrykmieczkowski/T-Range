@@ -145,7 +145,7 @@ public class SearchFragment extends Fragment {
                 } else {
                     searchView.requestFocus();
 
-                    Snackbar.make(relativeLayout,"Search contact",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(relativeLayout, "Search contact", Snackbar.LENGTH_SHORT).show();
 //                    showPopUpContactPicker();
                 }
                 AnimateUtils.compositeFade(mHandler, microphone, 1, 0, 600);
@@ -156,28 +156,29 @@ public class SearchFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
 
         SearchEngine engine = new SearchEngine();
-        engine.getSuggestions(searchView).subscribe(new Action1<List<Contact>>() {
-            @Override
-            public void call(List<Contact> contacts) {
-                Log.e(TAG, "call: " + contacts.size());
-                if (contacts.size() == 0) {
-                    return;
-                }
-                if (recyclerView.getVisibility() == View.GONE) {
-                    microphone.setVisibility(View.GONE);
-                    messageTo.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    AnimateUtils.animateFade(recyclerView, 0, 1, 300);
-                }
-                AnimateUtils.compositeFade(mHandler, recyclerView, 1, .5f, 200);
-                contactsAdapter.refresh(contacts);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                Log.e(TAG, "call: " + throwable.getMessage());
-            }
-        });
+        SearchEngine.deffered(engine.getSuggestions(searchView))
+                .subscribe(new Action1<List<Contact>>() {
+                    @Override
+                    public void call(List<Contact> contacts) {
+                        Log.e(TAG, "call: " + contacts.size());
+                        if (contacts.size() == 0) {
+                            return;
+                        }
+                        if (recyclerView.getVisibility() == View.GONE) {
+                            microphone.setVisibility(View.GONE);
+                            messageTo.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            AnimateUtils.animateFade(recyclerView, 0, 1, 300);
+                        }
+                        AnimateUtils.compositeFade(mHandler, recyclerView, 1, .5f, 200);
+                        contactsAdapter.refresh(contacts);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(TAG, "call: " + throwable.getMessage());
+                    }
+                });
         return v;
     }
 
