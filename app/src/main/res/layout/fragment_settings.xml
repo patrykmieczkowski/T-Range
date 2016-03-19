@@ -1,14 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="48dp"
     android:padding="16dp"
-    tools:context="com.kitowcy.t_range.SearchFragment">
+    tools:context="com.kitowcy.t_range.SearchFragment"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/no_signal_switch_layout"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <Switch
@@ -24,5 +27,24 @@
             android:text="Notify me when I lost my signal power" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/signal_back_switch_layout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</RelativeLayout>
+        <Switch
+            android:id="@+id/switch_signal_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/classicTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Notify me when I'll have signal again" />
+
+    </LinearLayout>
+
+</LinearLayout>

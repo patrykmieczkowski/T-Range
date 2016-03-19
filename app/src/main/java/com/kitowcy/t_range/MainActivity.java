@@ -1,7 +1,5 @@
 package com.kitowcy.t_range;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import com.kitowcy.t_range.search.AdditionalSearchActivity;
 import com.kitowcy.t_range.search.Contact;
 import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.signal.BroadcastSignalStateService;
-import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,11 +41,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         prepareViewPager();
-
-       /* mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(mBroadcastNoSignal);
-        mIntentFilter.addAction(mBroadcastSignalBack);
-        mIntentFilter.addAction(mBroadcastSignalLevel);*/
 
         Intent serviceIntent = new Intent(this, BroadcastSignalStateService.class);
         startService(serviceIntent);
@@ -92,38 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 } else Log.e(TAG, "onActivityResult: " + c);
             }
         }
-//        slideTab.setupWithViewPager(mainViewPager);
-//        for (int x = 0; x < slideTab.getTabCount(); x++) {
-//            slideTab.getTabAt(x).setIcon(R.drawable.signal_icon);
-//        }
     }
 
-   /* @Override
-    public void onResume() {
-        super.onResume();
-        registerReceiver(mReceiver, mIntentFilter);
-    }*/
 
-/*    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(mBroadcastNoSignal)) {
-                Log.d(TAG, "No signal!");
-                NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
-            }
-            if (intent.getAction().equals(mBroadcastSignalBack)) {
-                Log.d(TAG, "Signal back");
-            }
-            if (intent.getAction().equals(mBroadcastSignalLevel)) {
-                signalLevel = intent.getIntExtra("Signal level", -1);
-                Log.d(TAG, "Signal level " + signalLevel);
-            }
-        }
-    };*/
-
- /*   @Override
-    protected void onPause() {
-        unregisterReceiver(mReceiver);
-        super.onPause();
-    }*/
 }
