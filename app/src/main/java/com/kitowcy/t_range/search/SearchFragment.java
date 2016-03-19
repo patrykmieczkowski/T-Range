@@ -45,15 +45,19 @@ public class SearchFragment extends Fragment {
     public static final String TAG = SearchFragment.class.getSimpleName();
     @Bind(R.id.editText)
     SearchView searchView;
+
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+
     @Bind(R.id.fragment_search_content)
     RelativeLayout relativeLayout;
 
     @Bind(R.id.microphone)
     ImageView microphone;
+
     @Bind(R.id.messageTo)
     TextView messageTo;
+
     public boolean contactChosen = false;
     public boolean isSignal = true;
     private IntentFilter mIntentFilter;
@@ -222,6 +226,7 @@ public class SearchFragment extends Fragment {
         triggerForStop = false;
         mHandler.removeCallbacks(loopingAnimationRunnable);
         aliveAnimation = true;
+        messageTo.setText("Select another contact");
     }
 
     public interface Callable {
@@ -262,11 +267,11 @@ public class SearchFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MainActivity.mBroadcastNoSignal)) {
                 Log.d(TAG, "No signal!");
-              //  NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
+                //  NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
             }
             if (intent.getAction().equals(MainActivity.mBroadcastSignalBack)) {
                 Log.d(TAG, "Signal back");
-              //  NotificationBuilder.createNotification(context, "Signal is back!", "Yay! Signal is here again :)");
+                //  NotificationBuilder.createNotification(context, "Signal is back!", "Yay! Signal is here again :)");
             }
         }
     };
