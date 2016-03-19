@@ -3,6 +3,7 @@ package com.kitowcy.t_range.settings;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,9 +24,16 @@ import butterknife.OnClick;
 public class SettingsFragment extends Fragment {
 
     public static final String TAG = SettingsFragment.class.getSimpleName();
+    public static final String NotificationPREFERENCES = "NotificationSharedPreferences";
+    public static final String noSignalKey = "noSignal";
+    public static final String signalBackKey = "signalBack";
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     @Bind(R.id.switch_lost_signal)
     Switch lostSignalSwitch;
+    @Bind(R.id.switch_signal_back)
+    Switch signalBackSwitch;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -35,7 +43,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        sharedpreferences = getActivity().getSharedPreferences(NotificationPREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -54,8 +62,27 @@ public class SettingsFragment extends Fragment {
 
     @OnClick(R.id.switch_lost_signal)
     public void onLostSignalSwitchClick() {
+        editor = sharedpreferences.edit();
         if (lostSignalSwitch.isChecked()) {
-            NotificationBuilder.createNotification(getActivity(), "Signal Lost", "You lost your signal :(");
+           // NotificationBuilder.createNotification(getActivity(), "Signal Lost", "You lost your signal :(");
+            editor.putBoolean(noSignalKey, true);
         }
+        else{
+            editor.putBoolean(noSignalKey, false);
+        }
+        editor.commit();
+    }
+
+    @OnClick(R.id.switch_signal_back)
+    public void onSignalBackSwitchClick() {
+        editor = sharedpreferences.edit();
+        if (signalBackSwitch.isChecked()) {
+            // NotificationBuilder.createNotification(getActivity(), "Signal Lost", "You lost your signal :(");
+            editor.putBoolean(signalBackKey, true);
+        }
+        else{
+            editor.putBoolean(signalBackKey, false);
+        }
+        editor.commit();
     }
 }
