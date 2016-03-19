@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
+import com.kitowcy.t_range.map.MapFragment;
 import com.kitowcy.t_range.search.SearchFragment;
 import com.kitowcy.t_range.settings.SettingsFragment;
 import com.kitowcy.t_range.signal.SignalFragment;
@@ -20,7 +21,7 @@ import com.kitowcy.t_range.signal.SignalFragment;
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
-    String[] titles = {"Alert", "Message", "Settings"};
+    String[] titles = {"Alert", "Message", "Map", "Settings"};
     Context context;
 
     public MainViewPagerAdapter(FragmentManager fm, Context context) {
@@ -36,6 +37,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new SearchFragment();
             case 2:
+                return MapFragment.newInstance();
+            case 3:
                 return SettingsFragment.newInstance();
             default:
                 return SignalFragment.newInstance();
@@ -44,7 +47,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
 //    @Override

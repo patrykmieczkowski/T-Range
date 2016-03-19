@@ -72,14 +72,17 @@ public class MainActivity extends AppCompatActivity {
         View view1 = getLayoutInflater().inflate(R.layout.tab_layout_custom_layout, null);
         View view2 = getLayoutInflater().inflate(R.layout.tab_layout_custom_layout, null);
         View view3 = getLayoutInflater().inflate(R.layout.tab_layout_custom_layout, null);
+        View view4 = getLayoutInflater().inflate(R.layout.tab_layout_custom_layout, null);
 
         view1.findViewById(R.id.tab_layout_icon).setBackgroundResource(R.drawable.icon_signal);
         view2.findViewById(R.id.tab_layout_icon).setBackgroundResource(R.drawable.icon_message);
-        view3.findViewById(R.id.tab_layout_icon).setBackgroundResource(R.drawable.icon_settings);
+        view3.findViewById(R.id.tab_layout_icon).setBackgroundResource(R.drawable.icon_map);
+        view4.findViewById(R.id.tab_layout_icon).setBackgroundResource(R.drawable.icon_settings);
 
         slideTab.getTabAt(0).setCustomView(view1);
         slideTab.getTabAt(1).setCustomView(view2);
         slideTab.getTabAt(2).setCustomView(view3);
+        slideTab.getTabAt(3).setCustomView(view4);
 
     }
 
