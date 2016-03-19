@@ -1,7 +1,10 @@
 package com.kitowcy.t_range.search;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,8 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kitowcy.t_range.App;
+import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.AnimateUtils;
+import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +56,8 @@ public class SearchFragment extends Fragment {
     @Bind(R.id.messageTo)
     TextView messageTo;
     public boolean contactChosen = false;
+    public boolean isSignal = true;
+    private IntentFilter mIntentFilter;
     ContactsAdapter contactsAdapter;
 
     boolean aliveAnimation = true;
@@ -73,7 +80,11 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(MainActivity.mBroadcastNoSignal);
+        mIntentFilter.addAction(MainActivity.mBroadcastSignalBack);
     }
 
     @Override
@@ -241,4 +252,30 @@ public class SearchFragment extends Fragment {
         AnimateUtils.animateFade(messageTo, 0, 1, 300);
         AnimateUtils.animateFade(microphone, 0, 1, 300);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(mReceiver, mIntentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(mReceiver);
+        super.onPause();
+    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(MainActivity.mBroadcastNoSignal)) {
+                Log.d(TAG, "No signal!");
+              //  NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
+            }
+            if (intent.getAction().equals(MainActivity.mBroadcastSignalBack)) {
+                Log.d(TAG, "Signal back");
+              //  NotificationBuilder.createNotification(context, "Signal is back!", "Yay! Signal is here again :)");
+            }
+        }
+    };
 }
