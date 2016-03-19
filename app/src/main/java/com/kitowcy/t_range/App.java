@@ -29,8 +29,8 @@ public class App extends Application {
 
         LocationRequest request = LocationRequest.create() //standard GMS LocationRequest
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setNumUpdates(5)
-                .setInterval(100);
+             //   .setNumUpdates(5)
+                .setInterval(1000);
 
         ReactiveLocationProvider locationProvider = new ReactiveLocationProvider(this);
           subscription = locationProvider.getUpdatedLocation(request)

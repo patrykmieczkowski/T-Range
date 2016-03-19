@@ -26,7 +26,6 @@ import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.AnimateUtils;
-import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -117,7 +116,7 @@ public class SearchFragment extends Fragment {
                 if (triggerForStop) {
                     triggerForStop = false;
                     stopRecord();
-                    cleanFlags();
+                    clearFlags();
                     microphone.animate().scaleX(1).setDuration(500).start();
                     microphone.animate().scaleY(1).setDuration(500).start();
                     mHandler.postDelayed(new Runnable() {
@@ -223,14 +222,16 @@ public class SearchFragment extends Fragment {
         Log.d(TAG, "stopRecord: ");
         recorerHelper.recorder.stop();
     }
-    void cleanFlags(){
+
+    void clearFlags() {
         contactChosen = false;
         triggerForStop = false;
         mHandler.removeCallbacks(loopingAnimationRunnable);
         aliveAnimation = true;
         messageTo.setText("Select another contact");
-
+        microphone.setImageResource(R.drawable.record_start);
     }
+
     public interface Callable {
         void call(Boolean bool);
     }
@@ -248,6 +249,7 @@ public class SearchFragment extends Fragment {
         messageTo.setVisibility(View.VISIBLE);
         String message = "Message To: " + contact.name;
         messageTo.setText(message);
+        microphone.setImageResource(R.drawable.record_stop);
         AnimateUtils.animateFade(messageTo, 0, 1, 300);
         AnimateUtils.animateFade(microphone, 0, 1, 300);
     }
