@@ -33,6 +33,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(MainActivity.mBroadcastSignalLevel);
             broadcastIntent.putExtra("Signal level", signalStrength.getLevel());
+            broadcastIntent.putExtra("Signal strength", signalStrength.getCdmaDbm());
             mContext.sendBroadcast(broadcastIntent);
 
             //sending broadcast to MainActivity about loosing signal
