@@ -6,7 +6,9 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.util.Log;
 
+import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
+import com.kitowcy.t_range.utils.NotificationBuilder;
 
 /**
  * Created by Paulina on 2016-03-18.
@@ -36,6 +38,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
             //sending broadcast to MainActivity about loosing signal
             if (signalStrength.getLevel() == 0) {
                 Log.d(TAG, "No signal");
+                NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal lost!", "You lost your signal :(");
                 Intent broadcastIntentNoSignal = new Intent();
                 broadcastIntentNoSignal.setAction(MainActivity.mBroadcastNoSignal);
                 mContext.sendBroadcast(broadcastIntentNoSignal);
@@ -44,6 +47,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
             //sending broadcast to MainActivity about getting back signal
             if (previousSignalLevel == 0 && signalStrength.getLevel() > previousSignalLevel) {
                 Log.d(TAG, "Signal back");
+                NotificationBuilder.createNotification(App.INSTANCE.getApplicationContext(), "Signal is back!", "Yay! Signal is here again :)");
                 Intent broadcastIntentSignalBack = new Intent();
                 broadcastIntentSignalBack.setAction(MainActivity.mBroadcastSignalBack);
                 mContext.sendBroadcast(broadcastIntentSignalBack);

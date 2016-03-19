@@ -60,7 +60,7 @@ public class SignalFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MainActivity.mBroadcastNoSignal)) {
                 Log.d(TAG, "No signal!");
-                NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
+            //    NotificationBuilder.createNotification(context, "Signal lost!", "You lost your signal :(");
             }
             if (intent.getAction().equals(MainActivity.mBroadcastSignalBack)) {
                 Log.d(TAG, "Signal back");
