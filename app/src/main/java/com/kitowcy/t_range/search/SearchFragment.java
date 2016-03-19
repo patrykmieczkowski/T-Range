@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +47,9 @@ public class SearchFragment extends Fragment {
     public static final String TAG = SearchFragment.class.getSimpleName();
     @Bind(R.id.editText)
     SearchView searchView;
+
+    @Bind(R.id.textHint)
+    TextView textHint;
 
 
     @Bind(R.id.recyclerView)
@@ -172,11 +174,16 @@ public class SearchFragment extends Fragment {
                         }
                     });
                 } else {
-
-                    searchView.setQueryHint("Select Contact...");
+                    textHint.setVisibility(View.VISIBLE);
+                    textHint.setText("Select Contact...");
+                    AnimateUtils.compositeFade(mHandler, textHint, 0, 1, 600, new AnimateUtils.EndCallback() {
+                        @Override
+                        public void onEnd() {
+                            textHint.setVisibility(View.GONE);
+                        }
+                    });
                     searchView.requestFocus();
                     searchView.setFocusable(true);
-
                     searchView.animate().scaleY(3f).setDuration(300).start();
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -185,8 +192,6 @@ public class SearchFragment extends Fragment {
                         }
                     }, 300);
 
-                    Snackbar.make(relativeLayout, "search contact", Snackbar.LENGTH_SHORT).show();
-//                    showPopUpContactPicker();
                 }
                 AnimateUtils.compositeFade(mHandler, microphone, 1, 0, 600);
             }
