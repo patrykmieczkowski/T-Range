@@ -94,9 +94,7 @@ public class MapFragment extends Fragment {
         ButterKnife.bind(this, v);
         Log.d(TAG, "onCreateView: ");
         options = getMarkerOpts();
-        if (mapFragment == null) {
-            mapFragment = new SupportMapFragment();
-        }
+        mapFragment = new SupportMapFragment();
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mapFragmentContainer,
                 mapFragment).commitAllowingStateLoss();
