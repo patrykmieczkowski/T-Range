@@ -26,7 +26,6 @@ import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.AnimateUtils;
-import com.kitowcy.t_range.utils.NotificationBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -200,16 +199,6 @@ public class SearchFragment extends Fragment {
         if (boo) mHandler.postDelayed(loopingAnimationRunnable, 1400);
     }
 
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume: ");
-        super.onResume();
-    }
-    @Override
-    public void onPause() {
-        Log.d(TAG, "onPause: ");
-        super.onPause();
-    }
 
     private void startRecord(final Callable callable) {
         recorerHelper.prepareMediaRecorder().subscribeOn(Schedulers.io())
@@ -229,17 +218,20 @@ public class SearchFragment extends Fragment {
     private void stopRecord() {
         Log.d(TAG, "stopRecord: ");
         recorerHelper.recorder.stop();
+        contactChosen = false;
+        triggerForStop = false;
+        mHandler.removeCallbacks(loopingAnimationRunnable);
+        aliveAnimation = true;
     }
 
     public interface Callable {
         void call(Boolean bool);
     }
 
-    private Runnable loopingAnimationRunnable = new Runnable() {
+    private final Runnable loopingAnimationRunnable = new Runnable() {
         @Override
         public void run() {
             loopAnimation();
-
         }
     };
 
