@@ -15,16 +15,17 @@ import android.widget.TextView;
 
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
-import com.kitowcy.t_range.utils.DialogHelper;
 import com.kitowcy.t_range.utils.NotificationBuilder;
+
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SignalFragment extends Fragment {
     public static final String TAG = SignalFragment.class.getSimpleName();
     public int signalLevel;
+    public int signalStrength;
     private IntentFilter mIntentFilter;
 
     public static final String PERFECT = "perfect";
@@ -35,6 +36,7 @@ public class SignalFragment extends Fragment {
 
 
     TextView signalStrengthLevel;
+    TextView signalStrengthText;
     ImageView signalImage;
 
     public static SignalFragment newInstance() {
@@ -65,8 +67,7 @@ public class SignalFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_signal, container, false);
         signalStrengthLevel = (TextView) v.findViewById(R.id.signal_desc_text);
         signalImage = (ImageView) v.findViewById(R.id.signal_image);
-
-        ButterKnife.bind(this, v);
+        signalStrengthText = (TextView) v.findViewById(R.id.signal_power_text);
         return v;
     }
 
@@ -87,11 +88,14 @@ public class SignalFragment extends Fragment {
             }
             if (intent.getAction().equals(MainActivity.mBroadcastSignalLevel)) {
                 signalLevel = intent.getIntExtra("Signal level", -1);
+                signalStrength = intent.getIntExtra("Signal strength", -70);
+                signalStrengthText.setText(signalStrength + " "+ "dBm");
                 Log.d(TAG, "Signal level " + signalLevel);
+                Log.d(TAG, "Signal strength" + signalStrength);
                 switch (signalLevel) {
                     case 0:
                         signalStrengthLevel.setText(NO_SIGNAL);
-                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_0));
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
                         break;
                     case 1:
                         signalStrengthLevel.setText(WEAK);
@@ -114,8 +118,4 @@ public class SignalFragment extends Fragment {
         }
     };
 
-    @OnClick(R.id.request_signal_button)
-    public void showDialog() {
-        DialogHelper.showAlertNoInternet(getActivity());
-    }
 }
