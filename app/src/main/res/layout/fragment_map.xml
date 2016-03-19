@@ -1,26 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_map_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/colorPrimaryALPHA"
-    android:id="@+id/fragment_map_parent"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp"
     tools:context="com.kitowcy.t_range.SearchFragment">
 
     <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Mapa mapa testowa" />-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Mapa mapa testowa" />-->
     <RelativeLayout
-        android:background="@color/colorPrimaryALPHA"
         android:id="@+id/mapFragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryALPHA" />
+
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressMap"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
