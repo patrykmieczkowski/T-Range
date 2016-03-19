@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Notify me when I lost my signal power" />
+            android:text="notify when signal is gone" />
 
     </LinearLayout>
 
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Notify me when I'll have signal again" />
+            android:text="notify when signal is back" />
 
     </LinearLayout>
 
