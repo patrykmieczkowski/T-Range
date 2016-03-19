@@ -128,6 +128,7 @@ public class SearchFragment extends Fragment {
                     return;
                 }
                 if (contactChosen) {
+                    microphone.setImageResource(R.drawable.record_stop);
                     startRecord(new Callable() {
                         @Override
                         public void call(Boolean bool) {
@@ -249,7 +250,7 @@ public class SearchFragment extends Fragment {
         messageTo.setVisibility(View.VISIBLE);
         String message = "Message To: " + contact.name;
         messageTo.setText(message);
-        microphone.setImageResource(R.drawable.record_stop);
+
         AnimateUtils.animateFade(messageTo, 0, 1, 300);
         AnimateUtils.animateFade(microphone, 0, 1, 300);
     }
