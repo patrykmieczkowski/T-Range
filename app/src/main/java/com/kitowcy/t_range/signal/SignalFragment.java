@@ -25,11 +25,11 @@ public class SignalFragment extends Fragment {
     public int signalLevel;
     private IntentFilter mIntentFilter;
 
-    public static final String PERFECT = "Perfect";
-    public static final String GOOD = "Good";
-    public static final String VERY_GOOD = "Very good";
-    public static final String WEAK = "Week";
-    public static final String NO_SIGNAL = "No signal";
+    public static final String PERFECT = "perfect";
+    public static final String GOOD = "good";
+    public static final String VERY_GOOD = "very good";
+    public static final String WEAK = "week";
+    public static final String NO_SIGNAL = "no signal";
 
 
     TextView signalStrengthLevel;
