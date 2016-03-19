@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".search.SearchFragment">
 
+
     <android.support.v7.widget.SearchView
         android:id="@+id/editText"
         android:layout_width="match_parent"

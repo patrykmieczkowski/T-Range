@@ -1,6 +1,7 @@
 package com.kitowcy.t_range.search;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -46,6 +48,7 @@ public class SearchFragment extends Fragment {
     public static final String TAG = SearchFragment.class.getSimpleName();
     @Bind(R.id.editText)
     SearchView searchView;
+
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -112,6 +115,8 @@ public class SearchFragment extends Fragment {
         contactsAdapter = new ContactsAdapter(getActivity(), Collections.<Contact>emptyList(), new ContactsAdapter.OnClick() {
             @Override
             public void onClick(final Contact c) {
+                searchView.setQuery("", false);
+                hideKeyboard(getActivity());
                 contactChosen = true;
                 AnimateUtils.animateFade(recyclerView, 1, 0, 300, mHandler, new AnimateUtils.EndCallback() {
                     @Override
@@ -167,7 +172,18 @@ public class SearchFragment extends Fragment {
                         }
                     });
                 } else {
+
+                    searchView.setQueryHint("Select Contact...");
                     searchView.requestFocus();
+                    searchView.setFocusable(true);
+
+                    searchView.animate().scaleY(3f).setDuration(300).start();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            searchView.animate().scaleY(1f).setDuration(300).start();
+                        }
+                    }, 300);
 
                     Snackbar.make(relativeLayout, "search contact", Snackbar.LENGTH_SHORT).show();
 //                    showPopUpContactPicker();
@@ -213,6 +229,17 @@ public class SearchFragment extends Fragment {
     private void showPopUpContactPicker() {
         Intent intent = new Intent(getActivity(), AdditionalSearchActivity.class);
         getActivity().startActivityForResult(intent, 1);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void loopAnimation() {
