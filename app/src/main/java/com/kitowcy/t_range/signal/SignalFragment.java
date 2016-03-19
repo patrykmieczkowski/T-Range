@@ -4,7 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +16,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
-import com.kitowcy.t_range.utils.NotificationBuilder;
+import com.kitowcy.t_range.utils.AnimateUtils;
+import com.kitowcy.t_range.utils.GeocodingUtils;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class SignalFragment extends Fragment {
     public static final String TAG = SignalFragment.class.getSimpleName();
@@ -33,7 +44,59 @@ public class SignalFragment extends Fragment {
     public static final String VERY_GOOD = "very good";
     public static final String WEAK = "week";
     public static final String NO_SIGNAL = "no signal";
+    android.os.Handler handler = new Handler();
+    AtomicBoolean mutex = new AtomicBoolean(false);
 
+    @Bind(R.id.localization_text)
+    TextView localizationText;
+
+    @OnClick(R.id.request_signal_button)
+    public void onRequest() {
+        Log.d(TAG, "onRequest: ");
+        if (mutex.get()) {
+            Log.e(TAG, "mutexed");
+            return;
+        }
+        mutex.set(true);
+
+        Location lastLocation = App.INSTANCE.location;
+        if (lastLocation == null) {
+            Log.e(TAG, "last location is null");
+            localizationText.setText("Location not ready. Enable GPS");
+            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 600);
+            mutex.set(false);
+        } else {
+            Log.i(TAG, "fetch location: " + lastLocation.getLatitude() + "," + lastLocation.getLongitude());
+            GeocodingUtils.getCurrentLocation(App.INSTANCE, lastLocation)
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Address>() {
+                        @Override
+                        public void call(Address address) {
+                            String message = address.getAddressLine(0);
+                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                            localizationText.setText("Your location: " + message);
+                            AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                            mutex.set(false);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    localizationText.setText("Location not available now. Sorry");
+                                    AnimateUtils.compositeFade(handler, localizationText, 1, 0, 300);
+                                    mutex.set(false);
+                                }
+                            });
+                        }
+                    });
+        }
+    }
+
+    void runOnUiThread(Runnable r) {
+        getActivity().runOnUiThread(r);
+    }
 
     TextView signalStrengthLevel;
     TextView signalStrengthText;
@@ -65,8 +128,13 @@ public class SignalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_signal, container, false);
+
+        ButterKnife.bind(this, v);
+
         signalStrengthLevel = (TextView) v.findViewById(R.id.signal_desc_text);
         signalImage = (ImageView) v.findViewById(R.id.signal_image);
+
+
         signalStrengthText = (TextView) v.findViewById(R.id.signal_power_text);
         return v;
     }
