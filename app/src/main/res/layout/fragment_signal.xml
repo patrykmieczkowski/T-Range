@@ -30,16 +30,6 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/signal_1" />
 
-    <TextView
-        android:id="@+id/signal_power_text"
-        style="@style/classicTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/signal_desc_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="signal power: 50dB" />
-
     <Button
         android:id="@+id/request_signal_button"
         android:layout_width="match_parent"
@@ -59,8 +49,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/request_signal_button"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Krakow, ul. Czarnowiejska" />
 
+    <TextView
+        android:id="@+id/signal_power_text"
+        style="@style/classicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/localization_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="-70dBm" />
 
 </RelativeLayout>
