@@ -1,14 +1,10 @@
 package com.kitowcy.t_range;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
+import android.util.Log;
 
 import com.kitowcy.t_range.map.MapFragment;
 import com.kitowcy.t_range.search.SearchFragment;
@@ -20,7 +16,7 @@ import com.kitowcy.t_range.signal.SignalFragment;
  * @since 18.03.16.
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
-
+    public static final String TAG = MainViewPagerAdapter.class.getSimpleName();
     String[] titles = {"Alert", "Message", "Map", "Settings"};
     Context context;
 
@@ -37,7 +33,15 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new SearchFragment();
             case 2:
-                return MapFragment.newInstance();
+                if (App.INSTANCE.mapFragment == null) {
+                    Log.e(TAG, "new MapFragment is created!");
+                    MapFragment mapFragment = new MapFragment();
+                    App.INSTANCE.mapFragment = mapFragment;
+
+                    return mapFragment;
+                } else {
+                    return App.INSTANCE.mapFragment;
+                }
             case 3:
                 return SettingsFragment.newInstance();
             default:

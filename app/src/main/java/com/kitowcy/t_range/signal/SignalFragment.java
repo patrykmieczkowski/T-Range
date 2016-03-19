@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
+import com.kitowcy.t_range.dialog.SendDialog;
 import com.kitowcy.t_range.utils.AnimateUtils;
 import com.kitowcy.t_range.utils.GeocodingUtils;
 
@@ -55,6 +56,9 @@ public class SignalFragment extends Fragment {
         Log.d(TAG, "onRequest()");
 
         refreshLocation();
+
+        SendDialog sendDialog = new SendDialog(getActivity(), "data sent");
+        sendDialog.show();
 
     }
 
@@ -127,7 +131,7 @@ public class SignalFragment extends Fragment {
                 switch (signalLevel) {
                     case 0:
                         signalStrengthLevel.setText(NO_SIGNAL);
-                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_0));
                         break;
                     case 1:
                         signalStrengthLevel.setText(WEAK);

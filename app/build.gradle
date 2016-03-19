@@ -3,7 +3,14 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
     defaultConfig {
         applicationId "com.kitowcy.t_range"
         minSdkVersion 18
@@ -33,4 +40,5 @@ dependencies {
     compile 'pl.charmas.android:android-reactive-location:0.8@aar'
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'io.reactivex:rxjava:1.0.14'
-}
+    compile 'io.realm:realm-android:0.83.1'
+    }

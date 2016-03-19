@@ -9,9 +9,10 @@ import android.content.Context;
  */
 public class NotificationBuilder {
 
-    public static void createNotification(Context context, String title, String text) {
+    public static void createNotification(Context context, int drawable, String title, String text) {
+
         Notification notification = new Notification.Builder(context)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(drawable)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setAutoCancel(true)

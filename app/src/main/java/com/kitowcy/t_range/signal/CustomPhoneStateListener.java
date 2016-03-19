@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.kitowcy.t_range.App;
 import com.kitowcy.t_range.MainActivity;
+import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.NotificationBuilder;
 
 /**
