@@ -23,10 +23,44 @@
         android:background="@color/colorAccent" />
 
     <ImageView
+        android:id="@+id/signal_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_above="@id/signal_desc_text"
         android:layout_centerHorizontal="true"
         android:src="@drawable/signal_1" />
+
+    <TextView
+        android:id="@+id/signal_power_text"
+        style="@style/classicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signal_desc_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="signal power: 50dB" />
+
+    <Button
+        android:id="@+id/request_signal_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="28dp"
+        android:background="@drawable/button_frame_layout"
+        android:fontFamily="sans-serif-light"
+        android:text="request signal"
+        android:textAllCaps="false"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/localization_text"
+        style="@style/classicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/request_signal_button"
+        android:layout_centerHorizontal="true"
+        android:text="Krakow, ul. Czarnowiejska" />
+
 
 </RelativeLayout>

@@ -10,15 +10,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kitowcy.t_range.MainActivity;
 import com.kitowcy.t_range.R;
 import com.kitowcy.t_range.utils.NotificationBuilder;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class SignalFragment extends Fragment {
     public static final String TAG = SignalFragment.class.getSimpleName();
     public int signalLevel;
     private IntentFilter mIntentFilter;
+
+    public static final String PERFECT = "perfect";
+    public static final String GOOD = "good";
+    public static final String VERY_GOOD = "very good";
+    public static final String WEAK = "week";
+    public static final String NO_SIGNAL = "no signal";
+
+
+    TextView signalStrengthLevel;
+    ImageView signalImage;
 
     public static SignalFragment newInstance() {
         SignalFragment fragment = new SignalFragment();
@@ -46,6 +61,8 @@ public class SignalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_signal, container, false);
+        signalStrengthLevel = (TextView) v.findViewById(R.id.signal_desc_text);
+        signalImage = (ImageView) v.findViewById(R.id.signal_image);
         return v;
     }
 
@@ -67,6 +84,28 @@ public class SignalFragment extends Fragment {
             if (intent.getAction().equals(MainActivity.mBroadcastSignalLevel)) {
                 signalLevel = intent.getIntExtra("Signal level", -1);
                 Log.d(TAG, "Signal level " + signalLevel);
+                switch (signalLevel) {
+                    case 0:
+                        signalStrengthLevel.setText(NO_SIGNAL);
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
+                        break;
+                    case 1:
+                        signalStrengthLevel.setText(WEAK);
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_1));
+                        break;
+                    case 3:
+                        signalStrengthLevel.setText(VERY_GOOD);
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_3));
+                        break;
+                    case 4:
+                        signalStrengthLevel.setText(PERFECT);
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_4));
+                        break;
+                    default:
+                        signalStrengthLevel.setText(GOOD);
+                        signalImage.setImageDrawable(getResources().getDrawable(R.drawable.signal_2));
+
+                }
             }
         }
     };
