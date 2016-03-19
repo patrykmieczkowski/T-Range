@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
+import com.kitowcy.t_range.map.MapFragment;
 
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Subscriber;
@@ -21,11 +22,13 @@ public class App extends Application {
     public static App INSTANCE;
     public Location location;
     public Subscription subscription;
-
+    public MapFragment mapFragment;
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate: ");
         INSTANCE = this;
+        mapFragment = new MapFragment();
 
         LocationRequest request = LocationRequest.create() //standard GMS LocationRequest
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
