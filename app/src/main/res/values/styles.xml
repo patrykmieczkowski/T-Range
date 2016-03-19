@@ -26,7 +26,7 @@
     </style>
 
     <style name="largeCustomTextView" parent="@android:style/TextAppearance">
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">48sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
